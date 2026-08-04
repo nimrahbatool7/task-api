@@ -27,3 +27,37 @@ This project was created to practice backend fundamentals by implementing a comp
 
 
 Move into the project.
+
+## Installation
+
+Clone the repository.
+
+```bash
+git clone <repository-url>
+```
+
+Move into the project.
+
+```bash
+cd task-api
+```
+
+Install dependencies.
+
+```bash
+npm install
+```
+
+Run the server.
+
+```bash
+node app.js
+```
+
+Server starts at
+
+```
+http://localhost:3000
+```
+
+---
