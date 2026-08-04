@@ -74,3 +74,35 @@ http://localhost:3000
 | DELETE | /tasks/:id | Delete a task |
 
 ---
+
+Debugging Notes
+
+During development, I encountered an issue where port 3000 was already occupied by another Node.js process.
+
+To identify which process was using the port, I used:
+
+```bash
+netstat -ano | findstr :3000
+```
+
+This returned the Process ID (PID).
+
+Example:
+
+```
+TCP 0.0.0.0:3000 LISTENING 10640
+```
+
+To stop that process:
+
+```bash
+taskkill /PID 10640 /F
+```
+
+After freeing the port, the application started successfully.
+
+---
+
+## Author
+
+Backend AI Engineering Internship Project
