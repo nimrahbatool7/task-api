@@ -75,8 +75,64 @@ app.post('/tasks', (req, res)=> {
     tasks.push(newTask);
 
     return  res.status(201).json(newTask);
-})
+});
 
+// Stage 4 — Update & Delete 
+app.put('/tasks/:id', (req, res) =>
+{
+    const id = Number(req.params.id);
+
+    const taskWithId = tasks.find((task) => task.id === id);
+
+    if(taskWithId)
+    {
+        const { title, done } = req.body;
+
+        if(title === undefined && done === undefined)
+        {
+            return res.status(400).json({
+                error: "There is nothing to update"
+            });
+        }
+
+        if(title !== undefined)
+        {
+            taskWithId.title = title;
+        }
+
+        if(done !== undefined)
+        {
+            taskWithId.done = done;
+        }
+
+        return res.json(taskWithId);
+    }
+    else
+    {
+        return res.status(404).json({
+            error: `Task with id ${id} not found`
+        });
+    }
+});
+console.log("DELETE route loaded");
+app.delete('/tasks/:id', (req, res) =>
+{
+    const idToBeDeleted = Number(req.params.id);
+    // findindex() is used for delete not find 
+    const index = tasks.findIndex((task) => task.id === idToBeDeleted);
+    if(index ==-1)
+    {
+        return res.status(404).json(
+            {
+                error:`task with id ${idToBeDeleted} not found`,
+            }
+        );
+    }
+    else{
+        tasks.splice(index, 1)
+    }
+    return res.sendStatus(204);
+})
 
 app.listen(PORT, ()=>
 {
