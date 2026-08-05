@@ -1,6 +1,9 @@
 console.log("this is the main task file ");
 
 const express = require('express');
+const swaggerUI = require('swagger-ui-express');
+const swaggerDocument = require('./openapi.json');
+
 const app = express();
 app.use(express.json());
 const tasks = require('./task_List.js')
@@ -134,6 +137,8 @@ app.delete('/tasks/:id', (req, res) =>
     return res.sendStatus(204);
 })
 
+
+app.use('/docs', swaggerUI.serve, swaggerUI.setup(swaggerDocument));
 app.listen(PORT, ()=>
 {
     console.log(`this is running on port http://localhost:${PORT}`)
