@@ -51,8 +51,6 @@ app.get('/tasks/:id', (req, res) =>
     }
 })
 
-
-
 // Create: POST a new task 
 app.post('/tasks', (req, res)=> {
     const { title } = req.body;
