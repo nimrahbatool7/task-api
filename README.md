@@ -115,6 +115,10 @@ I connected the Node.js and Express application to SQLite using better-sqlite3. 
 Stage 1 — Reading Tasks from the Database
 
 I replaced the in-memory array reading logic with SQLite database operations. The API can retrieve all tasks or a single task by ID. Unknown task IDs still return a 404 error.
+
+Stage 2 — Creating New Tasks in the Database
+
+I updated the POST endpoint to save new tasks directly into SQLite. The existing validation and response status codes remained the same. Tasks now persist after restarting the server.
 ---
 
 ## Author
