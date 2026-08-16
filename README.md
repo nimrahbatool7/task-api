@@ -119,6 +119,10 @@ I replaced the in-memory array reading logic with SQLite database operations. Th
 Stage 2 — Creating New Tasks in the Database
 
 I updated the POST endpoint to save new tasks directly into SQLite. The existing validation and response status codes remained the same. Tasks now persist after restarting the server.
+
+Stage 3 — Updating and Deleting Tasks
+
+I replaced the in-memory update and delete operations with SQLite operations. PUT updates an existing task, while DELETE removes it from the database. I tested both operations through the API.
 ---
 
 ## Author
