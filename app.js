@@ -5,7 +5,6 @@ const express = require('express');
 const swaggerUI = require('swagger-ui-express');
 const swaggerDocument = require('./openapi.json');
 const Database = require('better-sqlite3');
-import sqlite from "sqlite3";
 
 const app = express();
 app.use(express.json());
@@ -37,7 +36,7 @@ if (taskCount.count === 0) {
 
     insertTask.run('study', 0);
     insertTask.run('exercise', 0);
-    insertTask.run('read', 0);
+    insertTask.run('read', 1);
 };
 //adding an endpoint get
 app.get('/', (req, res) =>
@@ -61,23 +60,28 @@ app.get("/health", (req, res) =>
 // getting task file 
 app.get('/tasks', (req, res) =>
 {
-    return res.json(tasks);
+    const allTasks = db
+    .prepare("SELECT * FROM tasks")
+    .all();
+
+    return res.json(allTasks);
 })
 // returning task with id 
 
 app.get('/tasks/:id', (req, res) =>
 {
     const task_id = Number(req.params.id);
-    const Task = tasks.find((task) => task.id === task_id);
-    if(Task)
+    const task = db
+    .prepare('SELECT * FROM tasks where id = ?')
+    .get(task_id);
+    if(task)
     {
-        return res.json(Task);
+        return res.json(task)
     }
-    else
-    {
+    else{
         return res.status(404).json({
-            error:`task ${task_id} not found`,
-        });
+            error:"TASK not found "
+        })
     }
 })
 
