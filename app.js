@@ -14,14 +14,22 @@ const PORT = 3000;
 
 
 const db = new Database('tasks.db');
+
+      
 // Create tasks table if it does not exist.
-db.exec(`
-    CREATE TABLE IF NOT EXISTS tasks (
-        id INTEGER PRIMARY KEY AUTOINCREMENT,
-        title TEXT NOT NULL,
-        done INTEGER NOT NULL DEFAULT 0
-    )
-`);
+    db.exec(`
+        CREATE TABLE IF NOT EXISTS tasks (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            title TEXT NOT NULL,
+            done INTEGER NOT NULL DEFAULT 0
+        )
+    `);
+    function getAllTasks ()
+        {
+            return db
+            .prepare(`SELECT * FROM tasks`)
+            .all();
+        }
 
 
 // Add example tasks only when the table is empty.
@@ -117,56 +125,36 @@ app.put('/tasks/:id', (req, res) =>
 {
     const id = Number(req.params.id);
 
-    const taskWithId = tasks.find((task) => task.id === id);
+    const {title, done} = req.body;
+    const updateTask = db
+    .prepare('UPDATE tasks SET title = ?, done = ? WHERE id = ?')
+    .run(title, done, id);
 
-    if(taskWithId)
-    {
-        const { title, done } = req.body;
-
-        if(title === undefined && done === undefined)
-        {
-            return res.status(400).json({
-                error: "There is nothing to update"
-            });
-        }
-
-        if(title !== undefined)
-        {
-            taskWithId.title = title;
-        }
-
-        if(done !== undefined)
-        {
-            taskWithId.done = done;
-        }
-
-        return res.json(taskWithId);
-    }
-    else
-    {
-        return res.status(404).json({
-            error: `Task with id ${id} not found`
-        });
-    }
-});
-console.log("DELETE route loaded");
-app.delete('/tasks/:id', (req, res) =>
-{
-    const idToBeDeleted = Number(req.params.id);
-    // findindex() is used for delete not find 
-    const index = tasks.findIndex((task) => task.id === idToBeDeleted);
-    if(index ==-1)
+    if(updateTask.changes===0)
     {
         return res.status(404).json(
             {
-                error:`task with id ${idToBeDeleted} not found`,
+                error: "Task with id not found "
             }
         );
     }
-    else{
-        tasks.splice(index, 1)
-    }
-    return res.sendStatus(204);
+    const updatedTasks = getAllTasks();
+    return res.json(updatedTasks);
+
+});
+console.log("DELETE route loaded");
+
+app.delete('/tasks/:id', (req, res) =>
+{
+    const id = Number(req.params.id);
+     const deleteTask = db
+    .prepare('DELETE FROM tasks WHERE id = ? ')
+    .run(id);
+
+    const remaininTask= getAllTasks();
+
+    return res.json(remaininTask);
+
 })
 
 
