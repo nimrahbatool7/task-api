@@ -101,6 +101,16 @@ taskkill /PID 10640 /F
 
 After freeing the port, the application started successfully.
 
+##WEEK 3
+In Week 2, I built a Task API using Node.js and Express.js. The tasks were stored in a JavaScript array in memory, which meant that all task data was lost whenever the server was restarted.
+
+In Week 3, I continued working on the same project and replaced the in-memory task storage with a SQLite database. The API endpoints remained the same, but the way the data was stored changed. Tasks are now stored in a database file called tasks.db, which allows the data to persist even after restarting the server.
+
+This assignment helped me understand the difference between the API layer and the data storage layer. The client still communicates with the same API endpoints, while the backend now uses SQL queries and SQLite to store and manage the task data.
+
+Stage 0 — Creating the SQLite Database
+
+I connected the Node.js and Express application to SQLite using better-sqlite3. I created the tasks.db database and the tasks table. Three example tasks are added only when the table is empty
 ---
 
 ## Author
