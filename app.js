@@ -87,7 +87,7 @@ app.get('/tasks/:id', (req, res) =>
 
 // Create: POST a new task 
 app.post('/tasks', (req, res)=> {
-    const { title } = req.body;
+    const { title , done} = req.body;
     if(!title)
     {
         return res.status(400).json(
@@ -96,20 +96,20 @@ app.post('/tasks', (req, res)=> {
             }
         )
     }
-    // adding task new id where previous task in task list were ended 
-    const newID = tasks[tasks.length-1].id+1;
+    const result = db
+    .prepare('INSERT INTO tasks (title, done) VALUES (?,?)')
+    .run(title, done);
 
-    // creating new object in task list file 
-    const newTask = {
-        id  : newID, 
-        title: title,
-        done:false,
-    }
+    const newTaskAdded = db
+    .prepare('SELECT * FROM tasks WHERE id = ?')
+    .get(result.lastInsertRowid);
 
-    // psuh to that task list 
-    tasks.push(newTask);
+    return(res.status(201).json(newTaskAdded));
+    // newTask.run('dinner', 1);
+    // newTask.run('Breaskfast', 0);
+    // newTask.run('work', 1);
+    // newTask.run('sleep', 1);
 
-    return  res.status(201).json(newTask);
 });
 
 // Stage 4 — Update & Delete 
