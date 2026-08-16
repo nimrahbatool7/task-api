@@ -111,6 +111,10 @@ This assignment helped me understand the difference between the API layer and th
 Stage 0 — Creating the SQLite Database
 
 I connected the Node.js and Express application to SQLite using better-sqlite3. I created the tasks.db database and the tasks table. Three example tasks are added only when the table is empty
+
+Stage 1 — Reading Tasks from the Database
+
+I replaced the in-memory array reading logic with SQLite database operations. The API can retrieve all tasks or a single task by ID. Unknown task IDs still return a 404 error.
 ---
 
 ## Author
