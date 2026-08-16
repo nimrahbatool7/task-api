@@ -123,6 +123,9 @@ I updated the POST endpoint to save new tasks directly into SQLite. The existing
 Stage 3 — Updating and Deleting Tasks
 
 I replaced the in-memory update and delete operations with SQLite operations. PUT updates an existing task, while DELETE removes it from the database. I tested both operations through the API.
+Stage 4 — Exploring SQLite and SQL Queries
+
+I opened tasks.db using DB Browser for SQLite and manually explored the database. I performed operations to view, filter, count, update, and delete tasks. I then verified the database changes through the API
 ---
 
 ## Author
